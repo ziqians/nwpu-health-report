@@ -28,4 +28,4 @@ jobs:
           NWPU_USERNAME: ${{ secrets.username }}
           NWPU_PASSWORD: ${{ secrets.password }}
         run: |
-          python run.py
+          python main.py
