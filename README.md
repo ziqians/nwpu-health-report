@@ -1,8 +1,38 @@
 # NWPU_COVID19_AutoReport
 
+此项目 fork 自 [Pinming/NWPU_COVID19_AutoReport](https://github.com/Pinming/NWPU_COVID19_AutoReport)。
+
+添加了对 Github Actions 自动的集成。用于自动提交 NWPU 每日健康报告。
+
+如果只需要自动填报，参考 Github Actions 章节即可。
+
+# Github Actions 部署方法
+
+1. 登录自己的 Github 账号。
+
+2. 将本项目 fork 到自己的仓库。
+
+3. 进入 `Settings` 选项卡，点击 `Secret`，并选择 `New Repository  Secret`。依次添加以下变量：
+   - `username`: 学号
+   - `password`: 翱翔门户密码
+
+![](images/secrets.png)
+4. 进入 `Actions` 选项卡，等待自动打卡或者手动运行 Action 。
+
+5. 项目默认在北京时间 10:00 自动打卡 (UTC 02:00)，可以根据需要修改 `.github/workflows/report.yml` 中 `cron` 项。
+
+6. 进入 Summary 来查看具体的记录：
+
+![](images/summary.png)
+
+7. 打卡失败时 Github Actions 会通过邮件等方式通知，如未启用可以开启`Send notifications for failed workflows only`。
+
+8. 项目默认关闭了微信通知，如果需要请自行 fork 修改。
+
+# 原项目介绍
 当前版本 `v2.0.1` (220113-1355)
 
-用于完成西工大每日健康申报的自动化程序。在进行自动填报的同时通过微信推送或 Email 提醒填报结果。    
+用于完成西工大每日健康申报的自动化程序。在进行自动填报的同时通过微信推送或 Email 提醒填报结果。
 本程序已经适配 2021 年 12 月疫情填报系统改动，确认兼容。
 
 想了解更多，还可以阅读 https://www.pm-z.tech/2020/07/26/Auto_Reporter_For_COVID19
@@ -16,7 +46,7 @@
 * 该软件并非万能，请**时常检查填报结果**！
 
 # 基本配置方法
-适用环境：Python 3.6 及以上版本。      
+适用环境：Python 3.6 及以上版本。
 程序已经集成所有第三方库，不需要使用 pip 再次安装。
 
 对于云函数应用，其程序入口为 `index.handler`。
@@ -33,7 +63,7 @@
 `SCKEY` |  ServerChan 微信推送服务对应的 Key，用于绑定自己的微信。
 
 > 关于 ServerChan 微信推送的配置，请参阅 [ServerChan 官方页面](https://sct.ftqq.com/sendkey) 。
-> 
+>
 > 其实只要绑定微信获得 `SCKEY` 就可以了，相当简单了。
 
 # 云端部署方法
@@ -52,7 +82,7 @@
 4) 点击「创建函数」；
 ![README-2022-01-13-17-38-24](https://oss.pm-z.tech/img/upload/README-2022-01-13-17-38-24.png)
 
-5) 按图示填入参数； 
+5) 按图示填入参数；
     > 其中：
     > - 「名称」可自定义；
     > - 「运行环境」选择 `Python 3`；
