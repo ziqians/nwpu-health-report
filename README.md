@@ -15,14 +15,13 @@
 3. 进入 `Settings` 选项卡，点击 `Secret`，并选择 `New Repository  Secret`。依次添加以下变量：
    - `username`: 学号
    - `password`: 翱翔门户密码
-
 ![](images/secrets.png)
+
 4. 进入 `Actions` 选项卡，等待自动打卡或者手动运行 Action 。
 
 5. 项目默认在北京时间 10:00 自动打卡 (UTC 02:00)，可以根据需要修改 `.github/workflows/report.yml` 中 `cron` 项。
 
 6. 进入 Summary 来查看具体的记录：
-
 ![](images/summary.png)
 
 7. 打卡失败时 Github Actions 会通过邮件等方式通知，如未启用可以开启`Send notifications for failed workflows only`。
