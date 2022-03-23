@@ -46,7 +46,6 @@
 
 # 基本配置方法
 适用环境：Python 3.6 及以上版本。
-程序已经集成所有第三方库，不需要使用 pip 再次安装。
 
 对于云函数应用，其程序入口为 `index.handler`。
 
@@ -96,7 +95,7 @@
     ```
     git clone https://github.com/Pinming/NWPU_COVID19_AutoReport.git
     mv ./NWPU_COVID19_AutoReport/* .
-    pip install -r requirements.txt -t `pwm`
+    pip install -r requirements.txt -t `pwd`
     ```
     ![README-2022-01-13-20-57-11](https://oss.pm-z.tech/img/upload/README-2022-01-13-20-57-11.png)
 
