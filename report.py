@@ -29,7 +29,7 @@ class NWPU_Yqtb_Site(object):
         self.sign = ""
         self.timeStamp = ""
         self.data_for_submit = None
-    
+
     # 登录
     def login(self, username, password):
         header_for_login = {
@@ -72,7 +72,7 @@ class NWPU_Yqtb_Site(object):
             if user_config.SC_switcher == 1:
                 Pusher.sc_push_when_login_failed(self)
             exit()
-    
+
     # 初始化当次填报信息
     def init_info(self):
         self.session.post(url_jrsb)
@@ -100,7 +100,7 @@ class NWPU_Yqtb_Site(object):
                                     res_jrsb.text)[0]
         self.sign = re.findall(re.compile('(?<=sign=).*(?=&)'),
                                res_jrsb.text)[0]
-        
+
         # 在 `/wx/ry/jrsb.jsp` 页面中，获取 `param_data`。
         param_data_str = re.findall(re.compile('var paramData = (.*?);'),
                                     res_jrsb.text)[2]
@@ -111,7 +111,7 @@ class NWPU_Yqtb_Site(object):
                                param_data_str)[0]
         self.xssjhm = re.findall(re.compile('(?<=xssjhm:\').*(?=\')'),
                                  param_data_str)[0]
-        
+
         # 在 `wx/xg/yz-mobile/rzxx_list.jsp` 中，获取 `szcsmc`，并查 `location.py` 得 `szcsbm`
         rzxx_list_str = self.session.post(url_rzxx_list, data=data_for_init, headers=header_for_init).text
         soup = BeautifulSoup(rzxx_list_str, 'html.parser')
@@ -133,9 +133,9 @@ class NWPU_Yqtb_Site(object):
             if user_config.SC_switcher == 1:
                 Pusher.sc_push_when_wrong_info(self)
             exit()
-        
+
         self.hsjc = self.get_last_hsjc_status(data_for_init, header_for_init)
-    
+
     def submit(self):
         # 伪造一次对 Form 页面的请求，获得 JSESSIONID
         self.session.get(url_jrsb)
@@ -183,12 +183,17 @@ class NWPU_Yqtb_Site(object):
             'szcsbm': self.szcsbm,
             'hsjc': self.hsjc,
         }
-        
+
         # self.judge_last_report_is_today(self.get_last_report_time(data_for_init, header_for_init)) 的意义：
         # 判断系统当前日期是否与最后一次填报的日期一致。
         # 如条件为 False，则不一致，认为今日未填报，执行 POST；
         # 否则跳过 POST 步骤，不再重复填报。
-        if not (self.judge_last_report_is_today(self.get_last_report_time(data_for_init, header_for_init))):
+        ok = False
+        try:
+            ok = (self.judge_last_report_is_today(self.get_last_report_time(data_for_init, header_for_init)))
+        except:
+            pass
+        if not ok:
             url_ry_util_with_token = url_ry_util + '?sign=' + self.sign + '&timeStamp=' + self.timeStamp
             self.session.post(url=url_ry_util_with_token,
                               data=self.data_for_submit,
@@ -196,7 +201,7 @@ class NWPU_Yqtb_Site(object):
         else:
             print('今日已填报，无需重复填报！')
             return
-        
+
         # 判断填报成功
         if (self.judge_last_report_is_today(self.get_last_report_time(data_for_init, header_for_init))):
             print('申报成功！')
@@ -206,7 +211,7 @@ class NWPU_Yqtb_Site(object):
             print('申报失败，请重试！')
             if user_config.SC_switcher == 1:
                 Pusher.sc_push_when_wrong_info(self)
-    
+
     # 获取最近一次日报填写页
     def get_last_report(self, data, header):
         # GET 日报填写列表页
@@ -220,7 +225,7 @@ class NWPU_Yqtb_Site(object):
         # 获取最近一次日报填写页
         detail_page = self.session.get(url_last_detail, data=data, headers=header)
         return detail_page.text
-    
+
     # 获取上一次核酸检测的状态
     def get_last_hsjc_status(self, data, header):
         # 获取最近一次日报核酸检测状态：'已检测' or '未检测'
@@ -231,17 +236,17 @@ class NWPU_Yqtb_Site(object):
             return '1'
         else:
             return '0'
-    
+
     def hsjc_to_string(self, hsjc_status):
         if (hsjc_status == '1'):
             return '已检测'
         else:
             return '未检测'
-    
+
     # 把字符串转成 datetime
     def string_toDatetime(self, st):
         return datetime.strptime(st, "%Y-%m-%d %H:%M:%S")
-    
+
     # 判断上一次填报是否为今天
     def judge_last_report_is_today(self, report_time):
         # 获取本机时间并转为东 8 区，部分云函数主机上的时间是 UTC 时间，会导致判断有误。
@@ -251,7 +256,7 @@ class NWPU_Yqtb_Site(object):
             return True
         else:
             return False
-    
+
     # 获取最近一次填报的时间，判断是否为今天
     def get_last_report_time(self, data, header):
         last_report_time = \
