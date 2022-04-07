@@ -6,6 +6,7 @@ import location
 import user_config
 from pusher import Pusher
 from lxml import etree
+import time
 
 # URL 常量
 url_jrsb = 'http://yqtb.nwpu.edu.cn/wx/ry/jrsb.jsp'  # 获取表格并进行操作
@@ -92,12 +93,11 @@ class NWPU_Yqtb_Site(object):
             'targetUrl':
                 'base64aHR0cDovL3lxdGIubndwdS5lZHUuY24vL3d4L3hnL3l6LW1vYmlsZS9pbmRleC5qc3A=',
         }
-        # 在 `/wx/ry/jrsb.jsp` 页面中，获取 `timeStamp` & `sign`。
+        # 在 `/wx/ry/jrsb.jsp` 页面中，获取 `sign`。
         res_jrsb = self.session.post(url_jrsb,
                                      data=data_for_init,
                                      headers=header_for_init)
-        self.timeStamp = re.findall(re.compile('(?<=&timeStamp=).*(?=\')'),
-                                    res_jrsb.text)[0]
+        self.timeStamp = f"{time.time():.0f}"
         self.sign = re.findall(re.compile('(?<=sign=).*(?=&)'),
                                res_jrsb.text)[0]
 
