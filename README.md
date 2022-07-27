@@ -1,5 +1,7 @@
 # NWPU_COVID19_AutoReport
 
+由于学业原因，此项目废弃，后续请fork源项目。
+
 此项目 fork 自 [Pinming/NWPU_COVID19_AutoReport](https://github.com/Pinming/NWPU_COVID19_AutoReport)。
 当前版本 `v2.1.5` (220717-1638)
 
