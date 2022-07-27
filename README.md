@@ -1,6 +1,7 @@
 # NWPU_COVID19_AutoReport
 
 此项目 fork 自 [Pinming/NWPU_COVID19_AutoReport](https://github.com/Pinming/NWPU_COVID19_AutoReport)。
+当前版本 `v2.1.5` (220717-1638)
 
 添加了对 Github Actions 自动的集成。用于自动提交 NWPU 每日健康报告。
 

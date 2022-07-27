@@ -1,9 +1,6 @@
 import user_config
 from report import NWPU_Yqtb_Site
 
-__version__ = [2, 1, 2, '220625-1434']
-
-
 def handler(event, context):
     username = user_config.username
     password = user_config.password
